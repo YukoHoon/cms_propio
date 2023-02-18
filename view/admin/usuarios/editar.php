@@ -1,26 +1,26 @@
 <h3>
     <a href="<?php echo $_SESSION['home'] ?>admin" title="Inicio">Inicio</a> <span>| </span>
     <a href="<?php echo $_SESSION['home'] ?>admin/usuarios" title="Usuarios">Usuarios</a> <span>| </span>
-    <?php if ($datos->key){ ?>
-        <span>Editar <?php echo $datos->user ?></span>
+    <?php if ($datos->id){ ?>
+        <span>Editar <?php echo $datos->username ?></span>
     <?php } else { ?>
         <span>Nuevo usuario</span>
     <?php } ?>
 </h3>
 <div class="row">
-    <?php $id = ($datos->key) ? $datos->key : "nuevo" ?>
+    <?php $id = ($datos->id) ? $datos->id : "nuevo" ?>
     <form class="col m12 l6" method="POST" action="<?php echo $_SESSION['home'] ?>admin/usuarios/editar/<?php echo $id ?>">
         <div class="row">
             <div class="input-field col s12">
                 <input id="usuario" type="text" name="usuario" value="<?php echo $datos->username ?>">
                 <label for="usuario">Usuario</label>
             </div>
-            <?php $clase = ($datos->key) ? "hide" : "" ?>
+            <?php $clase = ($datos->id) ? "hide" : "" ?>
             <div class="input-field col s12 <?php echo $clase ?>" id="password">
                 <input id="clave" type="password" name="clave" value="">
                 <label for="clave">Contraseña</label>
             </div>
-            <?php $clase = ($datos->key) ? "" : "hide" ?>
+            <?php $clase = ($datos->id) ? "" : "hide" ?>
             <p class="<?php echo $clase ?>">
                 <label for="cambiar_clave">
                     <input id="cambiar_clave" name="cambiar_clave" type="checkbox">
@@ -38,11 +38,11 @@
             </p>
             <p>
                 <label for="usuarios">
-                    <input id="usuarios" name="usuarios" type="checkbox" <?php echo ($datos->admin == 1) ? "checked" : "" ?>>
+                    <input id="usuarios" name="usuarios" type="checkbox" <?php echo ($datos->aduser == 1) ? "checked" : "" ?>>
                     <span>Usuarios</span>
                 </label>
             </p>
-            <?php $clase = ($datos->key) ? "" : "hide" ?>
+            <?php $clase = ($datos->id) ? "" : "hide" ?>
             <p class="<?php echo $clase ?>">
                 Último acceso: <strong><?php echo date("d/m/Y H:i", strtotime($datos->access_date)) ?></strong>
             </p>

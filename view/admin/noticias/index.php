@@ -37,21 +37,21 @@
                             <?php echo $row->title ?>
                         </h4>
                         <strong>URL amigable:</strong> <?php echo $row->slug ?><br>
-                        <strong>Fecha:</strong> <?php echo date("d/m/Y", strtotime($row->date)) ?>
+                        <strong>Fecha:</strong> <?php echo date("d/m/Y", strtotime($row->access_date)) ?>
                     </div>
                     <div class="card-action">
-                        <a href="<?php echo $_SESSION['home']."admin/noticias/editar/".$row->key ?>" title="Editar">
+                        <a href="<?php echo $_SESSION['home']."admin/noticias/editar/".$row->id ?>" title="Editar">
                             <i class="material-icons">edit</i>
                         </a>
-                        <?php $title = ($row->activo == 1) ? "Desactivar" : "Activar" ?>
-                        <?php $color = ($row->activo == 1) ? "green-text" : "red-text" ?>
-                        <?php $icono = ($row->activo == 1) ? "mood" : "mood_bad" ?>
-                        <a href="<?php echo $_SESSION['home']."admin/noticias/activar/".$row->key ?>" title="<?php echo $title ?>">
+                        <?php $title = ($row->activen == 1) ? "Desactivar" : "Activar" ?>
+                        <?php $color = ($row->activen == 1) ? "green-text" : "red-text" ?>
+                        <?php $icono = ($row->activen == 1) ? "mood" : "mood_bad" ?>
+                        <a href="<?php echo $_SESSION['home']."admin/noticias/activar/".$row->id ?>" title="<?php echo $title ?>">
                             <i class="<?php echo $color ?> material-icons"><?php echo $icono ?></i>
                         </a>
                         <?php $title = ($row->home == 1) ? "Quitar de la home" : "Mostrar en la home" ?>
                         <?php $color = ($row->home == 1) ? "green-text" : "red-text" ?>
-                        <a href="<?php echo $_SESSION['home']."admin/noticias/home/".$row->key ?>" title="<?php echo $title ?>">
+                        <a href="<?php echo $_SESSION['home']."admin/noticias/home/".$row->id ?>" title="<?php echo $title ?>">
                             <i class="<?php echo $color ?> material-icons">home</i>
                         </a>
                         <a href="#" class="activator" title="Borrar">
@@ -66,7 +66,7 @@
                         ¿Está seguro de que quiere borrar la noticia<strong><?php echo $row->title ?></strong>?<br>
                         Esta acción no se puede deshacer.
                     </p>
-                    <a href="<?php echo $_SESSION['home']."admin/noticias/borrar/".$row->key ?>" title="Borrar">
+                    <a href="<?php echo $_SESSION['home']."admin/noticias/borrar/".$row->id ?>" title="Borrar">
                         <button class="btn waves-effect waves-light" type="button">Borrar
                             <i class="material-icons right">delete</i>
                         </button>

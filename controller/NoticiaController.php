@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Helper\ViewHelper;
+use  App\Helper\ViewHelper;
 use App\Helper\DbHelper;
 use App\Model\Noticia;
 
@@ -29,7 +29,7 @@ class NoticiaController
         $this->view->permisos("noticias");
 
         //Recojo las noticias de la base de datos
-        $rowset = $this->db->query("SELECT * FROM news ORDER BY date DESC");
+        $rowset = $this->db->query("SELECT * FROM news ORDER BY access_date DESC");
 
         //Asigno resultados a un array de instancias del modelo
         $noticias = array();
@@ -42,20 +42,20 @@ class NoticiaController
     }
 
     //Para activar o desactivar
-    public function activar($key){
+    public function activar($id){
 
         //Permisos
         $this->view->permisos("noticias");
 
         //Obtengo la noticia
-        $rowset = $this->db->query("SELECT * FROM news WHERE `key`='$key' LIMIT 1");
+        $rowset = $this->db->query("SELECT * FROM news WHERE id='$id' LIMIT 1");
         $row = $rowset->fetch(\PDO::FETCH_OBJ);
         $noticia = new Noticia($row);
 
-        if ($noticia->active == 1){
+        if ($noticia->activen == 1){
 
             //Desactivo la noticia
-            $consulta = $this->db->exec("UPDATE news SET active=0 WHERE key='$key'");
+            $consulta = $this->db->exec("UPDATE news SET activen=0 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
@@ -66,7 +66,7 @@ class NoticiaController
         else{
 
             //Activo la noticia
-            $consulta = $this->db->exec("UPDATE news SET active=1 WHERE key='$key'");
+            $consulta = $this->db->exec("UPDATE news SET activen=1 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
@@ -83,25 +83,25 @@ class NoticiaController
         $this->view->permisos("noticias");
 
         //Obtengo la noticia
-        $rowset = $this->db->query("SELECT * FROM news WHERE `key`='$id' LIMIT 1");
+        $rowset = $this->db->query("SELECT * FROM news WHERE id='$id' LIMIT 1");
         $row = $rowset->fetch(\PDO::FETCH_OBJ);
         $noticia = new Noticia($row);
 
         if ($noticia->home == 1){
 
             //Quito la noticia de la home
-            $consulta = $this->db->exec("UPDATE news SET home=0 WHERE `key`='$id'");
+            $consulta = $this->db->exec("UPDATE news SET home=0 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
-                $this->view->redireccionConMensaje("admin/noticias","green","La noticia <strong>$noticia->titulo</strong> ya no se muestra en la home.") :
+                $this->view->redireccionConMensaje("admin/noticias","green","La noticia <strong>$noticia->title</strong> ya no se muestra en la home.") :
                 $this->view->redireccionConMensaje("admin/noticias","red","Hubo un error al guardar en la base de datos.");
         }
 
         else{
 
             //Muestro la noticia en la home
-            $consulta = $this->db->exec("UPDATE news SET home=1 WHERE `key`='$id'");
+            $consulta = $this->db->exec("UPDATE news SET home=1 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
@@ -117,12 +117,12 @@ class NoticiaController
         $this->view->permisos("noticias");
 
         //Obtengo la noticia
-        $rowset = $this->db->query("SELECT * FROM news WHERE `key`='$id' LIMIT 1");
+        $rowset = $this->db->query("SELECT * FROM news WHERE id='$id' LIMIT 1");
         $row = $rowset->fetch(\PDO::FETCH_OBJ);
         $noticia = new Noticia($row);
 
         //Borro la noticia
-        $consulta = $this->db->exec("DELETE FROM news WHERE `key`='$id'");
+        $consulta = $this->db->exec("DELETE FROM news WHERE id='$id'");
 
         //Borro la imagen asociada
         $archivo = $_SESSION['public']."img/".$noticia->image;
@@ -176,14 +176,14 @@ class NoticiaController
             //Imagen
             $imagen_recibida = $_FILES['imagen'];
             $imagen = ($_FILES['imagen']['name']) ? $_FILES['imagen']['name'] : "";
-            $imagen_subida = ($_FILES['imagen']['name']) ? '/var/www/html'.$_SESSION['public']."img/".$_FILES['imagen']['name'] : "";
+            $imagen_subida = ($_FILES['imagen']['name']) ? '/var/www/html'.$_SESSION['public'].'img/'.$_FILES['imagen']['name'] : "";
             $texto_img = ""; //Para el mensaje
 
             if ($id == "nuevo"){
 
                 //Creo una nueva noticia
                 $consulta = $this->db->exec("INSERT INTO news 
-                    (title, subtitle, author, date, text, slug, image) VALUES 
+                    (title, subtitle, author, access_date, full_text, slug, image) VALUES 
                     ('$titulo','$entradilla','$autor','$fecha','$texto','$slug','$imagen')");
 
                 //Subo la imagen
@@ -206,13 +206,13 @@ class NoticiaController
                 //Actualizo la noticia
                 $this->db->exec("UPDATE news SET 
                     title='$titulo',subtitle='$entradilla',author='$autor',
-                    date='$fecha',text='$texto',slug='$slug' WHERE `key`='$id'");
+                    access_date='$fecha',full_text='$texto',slug='$slug' WHERE id='$id'");
 
                 //Subo y actualizo la imagen
                 if ($imagen){
                     if (is_uploaded_file($imagen_recibida['tmp_name']) && move_uploaded_file($imagen_recibida['tmp_name'], $imagen_subida)){
                         $texto_img = " La imagen se ha subido correctamente.";
-                        $this->db->exec("UPDATE news SET image='$imagen' WHERE `key`='$id'");
+                        $this->db->exec("UPDATE news SET image='$imagen' WHERE id='$id'");
                     }
                     else{
                         $texto_img = " Hubo un problema al subir la imagen.";
@@ -229,7 +229,7 @@ class NoticiaController
         else{
 
             //Obtengo la noticia
-            $rowset = $this->db->query("SELECT * FROM news WHERE `key`='$id' LIMIT 1");
+            $rowset = $this->db->query("SELECT * FROM news WHERE id='$id' LIMIT 1");
             $row = $rowset->fetch(\PDO::FETCH_OBJ);
             $noticia = new Noticia($row);
 

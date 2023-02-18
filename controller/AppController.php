@@ -25,7 +25,7 @@ class AppController
     public function index(){
 
         //Consulta a la bbdd
-        $rowset = $this->db->query("SELECT * FROM news WHERE active=1 AND home=1 ORDER BY date DESC");
+        $rowset = $this->db->query("SELECT * FROM news WHERE activen=1 AND home=1 ORDER BY access_date DESC");
 
         //Asigno resultados a un array de instancias del modelo
         $noticias = array();
@@ -47,7 +47,7 @@ class AppController
     public function noticias(){
 
         //Consulta a la bbdd
-        $rowset = $this->db->query("SELECT * FROM news WHERE active=1 ORDER BY date DESC");
+        $rowset = $this->db->query("SELECT * FROM news WHERE activen=1 ORDER BY access_date DESC");
 
         //Asigno resultados a un array de instancias del modelo
         $noticias = array();
@@ -63,7 +63,7 @@ class AppController
     public function noticia($slug){
 
         //Consulta a la bbdd
-        $rowset = $this->db->query("SELECT * FROM news WHERE active=1 AND slug='$slug' LIMIT 1");
+        $rowset = $this->db->query("SELECT * FROM news WHERE activen=1 AND slug='$slug' LIMIT 1");
 
         //Asigno resultado a una instancia del modelo
         $row = $rowset->fetch(\PDO::FETCH_OBJ);

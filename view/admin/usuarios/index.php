@@ -29,17 +29,17 @@
                         <h4>
                             <?php echo $row->username ?>
                         </h4>
-                        <strong>Usuarios: </strong><?php echo ($row->admin) ? "Sí" : "No" ?><br>
+                        <strong>Usuarios: </strong><?php echo ($row->aduser) ? "Sí" : "No" ?><br>
                         <strong>Noticias: </strong><?php echo ($row->news) ? "Sí" : "No" ?>
                     </div>
                     <div class="card-action">
-                        <a href="<?php echo $_SESSION['home']."admin/usuarios/editar/".$row->key ?>" title="Editar">
+                        <a href="<?php echo $_SESSION['home']."admin/usuarios/editar/".$row->id ?>" title="Editar">
                             <i class="material-icons">edit</i>
                         </a>
-                        <?php $title = ($row->active == 1) ? "Desactivar" : "Activar" ?>
-                        <?php $color = ($row->active == 1) ? "green-text" : "red-text" ?>
-                        <?php $icono = ($row->active == 1) ? "mood" : "mood_bad" ?>
-                        <a href="<?php echo $_SESSION['home']."admin/usuarios/activar/".$row->key ?>" title="<?php echo $title ?>">
+                        <?php $title = ($row->activen == 1) ? "Desactivar" : "Activar" ?>
+                        <?php $color = ($row->activen == 1) ? "green-text" : "red-text" ?>
+                        <?php $icono = ($row->activen == 1) ? "mood" : "mood_bad" ?>
+                        <a href="<?php echo $_SESSION['home']."admin/usuarios/activar/".$row->id ?>" title="<?php echo $title ?>">
                             <i class="<?php echo $color ?> material-icons"><?php echo $icono ?></i>
                         </a>
                         <a href="#" class="activator" title="Borrar">
@@ -51,10 +51,10 @@
                 <div class="card-reveal">
                     <span class="card-title grey-text text-darken-4">Borrar usuario<i class="material-icons right">close</i></span>
                     <p>
-                        ¿Está seguro de que quiere borrar al usuario<strong><?php echo $row->user ?></strong>?<br>
+                        ¿Está seguro de que quiere borrar al usuario<strong><?php echo $row->username ?></strong>?<br>
                         Esta acción no se puede deshacer.
                     </p>
-                    <a href="<?php echo $_SESSION['home']."admin/usuarios/borrar/".$row->key ?>" title="Borrar">
+                    <a href="<?php echo $_SESSION['home']."admin/usuarios/borrar/".$row->id ?>" title="Borrar">
                         <button class="btn waves-effect waves-light" type="button">Borrar
                             <i class="material-icons right">delete</i>
                         </button>

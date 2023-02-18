@@ -13,10 +13,10 @@
                 <div class="card-content">
                     <h4><?php echo $datos->title ?></h4>
                     <p><?php echo $datos->subtitle ?></p>
-                    <p><?php echo $datos->text ?></p>
+                    <p><?php echo $datos->full_text ?></p>
                     <br>
                     <p>
-                        <strong>Fecha</strong>: <?php echo date("d/m/Y", strtotime($datos->date)) ?><br>
+                        <strong>Fecha</strong>: <?php echo date("d/m/Y", strtotime($datos->access_date)) ?><br>
                         <strong>Autor</strong>: <?php echo $datos->author ?>
                     </p>
                 </div>

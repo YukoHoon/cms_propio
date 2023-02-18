@@ -1,14 +1,14 @@
 <h3>
     <a href="<?php echo $_SESSION['home'] ?>admin" title="Inicio">Inicio</a> <span>| </span>
     <a href="<?php echo $_SESSION['home'] ?>admin/noticias" title="Noticias">Noticias</a> <span>| </span>
-    <?php if ($datos->key){ ?>
+    <?php if ($datos->id){ ?>
         <span>Editar <?php echo $datos->title ?></span>
     <?php } else { ?>
         <span>Nueva noticia</span>
     <?php } ?>
 </h3>
 <div class="row">
-    <?php $id = ($datos->key) ? $datos->key : "nuevo" ?>
+    <?php $id = ($datos->id) ? $datos->id : "nuevo" ?>
     <form class="col s12" method="POST" enctype="multipart/form-data" action="<?php echo $_SESSION['home'] ?>admin/noticias/editar/<?php echo $id ?>">
         <div class="col m12 l6">
             <div class="row">
@@ -21,7 +21,7 @@
                     <label for="autor">Autor</label>
                 </div>
                 <div class="input-field col s12">
-                    <?php $fecha = ($datos->date) ? date("d-m-Y", strtotime($datos->date)) : date("d-m-Y") ?>
+                    <?php $fecha = ($datos->access_date) ? date("d-m-Y", strtotime($datos->access_date)) : date("d-m-Y") ?>
                     <input id="fecha" type="text" name="fecha" class="datepicker" value="<?php echo $fecha ?>">
                     <label for="fecha">Fecha</label>
                 </div>
@@ -48,7 +48,7 @@
                     <label for="entradilla">Entradilla</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="texto" class="materialize-textarea" name="texto"><?php echo $datos->text ?></textarea>
+                    <textarea id="texto" class="materialize-textarea" name="texto"><?php echo $datos->full_text ?></textarea>
                     <label for="texto">Texto</label>
                 </div>
             </div>

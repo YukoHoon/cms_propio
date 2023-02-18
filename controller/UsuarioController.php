@@ -48,7 +48,7 @@ class UsuarioController
             $campo_clave = filter_input(INPUT_POST, "clave", FILTER_SANITIZE_STRING);
 
             //Busco al usuario en la base de datos
-            $rowset = $this->db->query("SELECT * FROM users WHERE username='$campo_usuario' AND activo=1 LIMIT 1");
+            $rowset = $this->db->query("SELECT * FROM users WHERE username='$campo_usuario' AND activen=1 LIMIT 1");
 
             //Asigno resultado a una instancia del modelo
             $row = $rowset->fetch(\PDO::FETCH_OBJ);
@@ -63,7 +63,7 @@ class UsuarioController
 
                     //Asigno el usuario y los permisos la sesión
                     $_SESSION["usuario"] = $usuario->username;
-                    $_SESSION["usuarios"] = $usuario->admin;
+                    $_SESSION["usuarios"] = $usuario->aduser;
                     $_SESSION["noticias"] = $usuario->news;
 
                     //Guardo la fecha de último acceso
@@ -127,29 +127,32 @@ class UsuarioController
         $this->view->permisos("usuarios");
 
         //Obtengo el usuario
-        $rowset = $this->db->query("SELECT * FROM users WHERE key='$id' LIMIT 1");
+        $rowset = $this->db->query("SELECT * FROM users WHERE id='$id'");
+        echo 'hola';
         $row = $rowset->fetch(\PDO::FETCH_OBJ);
         $usuario = new Usuario($row);
 
-        if ($usuario->activo == 1){
+
+
+        if ($usuario->activen == 1){
 
             //Desactivo el usuario
-            $consulta = $this->db->exec("UPDATE users SET active=0 WHERE key='$id'");
+            $consulta = $this->db->exec("UPDATE users SET activen=0 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
-                $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario->usuario</strong> se ha desactivado correctamente.") :
+                $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario->username</strong> se ha desactivado correctamente.") :
                 $this->view->redireccionConMensaje("admin/usuarios","red","Hubo un error al guardar en la base de datos.");
         }
 
         else{
 
             //Activo el usuario
-            $consulta = $this->db->exec("UPDATE users SET active=1 WHERE key='$id'");
+            $consulta = $this->db->exec("UPDATE users SET activen=1 WHERE id='$id'");
 
             //Mensaje y redirección
             ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
-                $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario->usuario</strong> se ha activado correctamente.") :
+                $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario->username</strong> se ha activado correctamente.") :
                 $this->view->redireccionConMensaje("admin/usuarios","red","Hubo un error al guardar en la base de datos.");
         }
 
@@ -161,7 +164,7 @@ class UsuarioController
         $this->view->permisos("usuarios");
 
         //Borro el usuario
-        $consulta = $this->db->exec("DELETE FROM users WHERE key='$id'");
+        $consulta = $this->db->exec("DELETE FROM users WHERE id='$id'");
 
         //Mensaje y redirección
         ($consulta > 0) ? //Compruebo consulta para ver que no ha habido errores
@@ -204,7 +207,7 @@ class UsuarioController
             if ($id == "nuevo"){
 
                 //Creo un nuevo usuario
-                $this->db->exec("INSERT INTO users (username, key, news, admin) VALUES ('$usuario','$clave_encriptada',$noticias,$usuarios)");
+                $this->db->exec("INSERT INTO users (username, password, aduser, news) VALUES ('$usuario','$clave_encriptada','$usuarios','$noticias')");
 
                 //Mensaje y redirección
                 $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario</strong> se creado correctamente.");
@@ -213,8 +216,8 @@ class UsuarioController
 
                 //Actualizo el usuario
                 ($cambiar_clave) ?
-                    $this->db->exec("UPDATE users SET username='$usuario',password='$clave_encriptada',news='$noticias',admin='$usuarios' WHERE key='$id'") :
-                    $this->db->exec("UPDATE users SET username='$usuario',news=$noticias,admin=$usuarios WHERE key='$id'");
+                    $this->db->exec("UPDATE users SET username='$usuario',password='$clave_encriptada',news='$noticias',aduser='$usuarios' WHERE id='$id'") :
+                    $this->db->exec("UPDATE users SET username='$usuario',news=$noticias,aduser=$usuarios WHERE id='$id'");
 
                 //Mensaje y redirección
                 $this->view->redireccionConMensaje("admin/usuarios","green","El usuario <strong>$usuario</strong> se actualizado correctamente.");
@@ -225,7 +228,7 @@ class UsuarioController
         else{
 
             //Obtengo el usuario
-            $rowset = $this->db->query("SELECT * FROM users WHERE key='$id' LIMIT 1");
+            $rowset = $this->db->query("SELECT * FROM users WHERE id='$id' LIMIT 1");
             $row = $rowset->fetch(\PDO::FETCH_OBJ);
             $usuario = new Usuario($row);
 

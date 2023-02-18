@@ -12,7 +12,7 @@
                         <p><?php echo $row->subtitle ?></p>
                     </div>
                     <div class="card-info">
-                        <p><?php echo date("d/m/Y", strtotime($row->date)) ?></p>
+                        <p><?php echo date("d/m/Y", strtotime($row->access_date)) ?></p>
                     </div>
                     <div class="card-action">
                         <a href="<?php echo $_SESSION['home']."noticia/".$row->slug ?>">Más información</a>
