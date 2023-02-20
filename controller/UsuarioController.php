@@ -59,7 +59,7 @@ class UsuarioController
             //Si existe el usuario
             if ($usuario){
                 //Compruebo la clave
-                if ($campo_clave === $usuario->password) {
+                if (password_verify($campo_clave,$usuario->password)) {
 
                     //Asigno el usuario y los permisos la sesión
                     $_SESSION["usuario"] = $usuario->username;
