@@ -3,6 +3,7 @@
 
 html{
     color: #333;
+    background-color: #feffdd;
 }
 
 body{
@@ -12,7 +13,7 @@ body{
 }
 
 nav{
-    background-color: #333;
+    background-color: #04043b;
     box-shadow: none;
     -webkit-box-shadow: none;
     padding: 0 2rem;
@@ -42,7 +43,7 @@ header h2{
 }
 
 footer{
-    background-color: #333;
+    background-color: #04043b;
     color: white;
     padding: 1rem 0;
 }
